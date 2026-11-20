@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Portal - Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <!-- Left side menu -->
+    <aside class="sidebar">
+      <h2 class="logo">CarePoint</h2>
+      <p class="side-subtitle">Hospital Portal</p>
+
+      <nav>
+        <a href="#dashboard" class="nav-link active" data-page="dashboard">Dashboard</a>
+        <a href="#staff" class="nav-link" data-page="staff">Staff Management</a>
+        <a href="#departments" class="nav-link" data-page="departments">Departments</a>
+        <a href="#users" class="nav-link" data-page="users">Manage Users</a>
+      </nav>
+
+      <p class="sidebar-note">Logged in as<br><strong>Hospital Admin</strong></p>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main">
+      <header class="topbar">
+        <div>
+          <h3>Hospital Admin Panel</h3>
+          <p class="muted">Hospital Appointment &amp; Healthcare Portal</p>
+        </div>
+        <div class="admin-profile">
+          <span class="admin-circle">A</span>
+          <span>Admin</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page-section active">
+          <h1>Dashboard Overview</h1>
+          <p class="muted">A quick overview of hospital information.</p>
+
+          <div class="cards">
+            <div class="card">
+              <p class="card-title">Total Doctors</p>
+              <h2 id="totalDoctors">0</h2>
+            </div>
+            <div class="card">
+              <p class="card-title">Total Patients</p>
+              <h2 id="totalPatients">0</h2>
+            </div>
+            <div class="card">
+              <p class="card-title">Total Appointments</p>
+              <h2 id="totalAppointments">86</h2>
+            </div>
+            <div class="card">
+              <p class="card-title">Total Receptionists</p>
+              <h2 id="totalReceptionists">0</h2>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Recent Staff Members</h2>
+                <p class="muted">Doctors and receptionists registered in the system.</p>
+              </div>
+              <button type="button" class="btn" id="goToStaff">Manage Staff</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Name</th><th>Email</th><th>Role</th><th>Department</th><th>Status</th></tr>
+                </thead>
+                <tbody id="recentStaffTable"></tbody>
+              </table>
+            </div>
+          </div>
+          <p class="demo-note">Note: The appointment number is sample data for this front-end demonstration.</p>
+        </section>
+
+        <!-- STAFF MANAGEMENT -->
+        <section id="staff" class="page-section">
+          <div class="section-heading">
+            <div>
+              <h1>Staff Management</h1>
+              <p class="muted">Add, edit, or deactivate Doctor and Receptionist accounts.</p>
+            </div>
+          </div>
+
+          <div class="panel form-panel">
+            <h2 id="staffFormHeading">Add New Staff</h2>
+            <form id="staffForm" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="staffName">Full Name</label>
+                  <input type="text" id="staffName" placeholder="Enter full name">
+                  <span class="error" id="staffNameError"></span>
+                </div>
+                <div class="form-group">
+                  <label for="staffEmail">Email Address</label>
+                  <input type="text" id="staffEmail" placeholder="name@example.com">
+                  <span class="error" id="staffEmailError"></span>
+                </div>
+                <div class="form-group">
+                  <label for="staffRole">User Role</label>
+                  <select id="staffRole">
+                    <option value="">Select Role</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Receptionist">Receptionist</option>
+                  </select>
+                  <span class="error" id="staffRoleError"></span>
+                </div>
+                <div class="form-group doctor-only">
+                  <label for="staffDepartment">Department</label>
+                  <select id="staffDepartment">
+                    <option value="">Select Department</option>
+                  </select>
+                  <span class="error" id="staffDepartmentError"></span>
+                </div>
+                <div class="form-group doctor-only">
+                  <label for="staffFee">Consultation Fee (BDT)</label>
+                  <input type="number" id="staffFee" placeholder="Example: 1000" min="0">
+                  <span class="error" id="staffFeeError"></span>
+                </div>
+                <div class="form-group">
+                  <label for="staffPassword">Temporary Password</label>
+                  <input type="password" id="staffPassword" placeholder="At least 6 characters">
+                  <small class="help-text">Password is not saved in this browser demo.</small>
+                  <span class="error" id="staffPasswordError"></span>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn" id="staffSubmitButton">Add Staff</button>
+                <button type="button" class="btn btn-light" id="cancelEditButton">Clear</button>
+              </div>
+              <p id="staffMessage" class="success-message"></p>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2>Staff List</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Name</th><th>Email</th><th>Role</th><th>Department</th><th>Fee (BDT)</th><th>Status</th><th>Action</th></tr>
+                </thead>
+                <tbody id="staffTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- DEPARTMENT MANAGEMENT -->
+        <section id="departments" class="page-section">
+          <h1>Department Management</h1>
+          <p class="muted">Create departments, set consultation fees, and assign doctors.</p>
+
+          <div class="panel form-panel">
+            <h2 id="departmentFormHeading">Add Department</h2>
+            <form id="departmentForm" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="departmentName">Department Name</label>
+                  <input type="text" id="departmentName" placeholder="Example: Cardiology">
+                  <span class="error" id="departmentNameError"></span>
+                </div>
+                <div class="form-group">
+                  <label for="departmentFee">Consultation Fee (BDT)</label>
+                  <input type="number" id="departmentFee" placeholder="Example: 1000" min="0">
+                  <span class="error" id="departmentFeeError"></span>
+                </div>
+                <div class="form-group">
+                  <label for="assignDoctor">Assign Doctor (optional)</label>
+                  <select id="assignDoctor">
+                    <option value="">No doctor selected</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn" id="departmentSubmitButton">Add Department</button>
+                <button type="button" class="btn btn-light" id="clearDepartmentButton">Clear</button>
+              </div>
+              <p id="departmentMessage" class="success-message"></p>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2>Department List</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Department</th><th>Consultation Fee (BDT)</th><th>Assigned Doctors</th><th>Action</th></tr>
+                </thead>
+                <tbody id="departmentTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- USER MANAGEMENT -->
+        <section id="users" class="page-section">
+          <h1>Manage Users</h1>
+          <p class="muted">View all Patients, Doctors, and Receptionists. Deactivate or activate accounts.</p>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <h2>All Registered Users</h2>
+              <input type="text" id="userSearch" class="search-input" placeholder="Search by name or email">
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Name</th><th>Email</th><th>Role</th><th>Department</th><th>Status</th><th>Action</th></tr>
+                </thead>
+                <tbody id="usersTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
